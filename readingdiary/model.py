@@ -30,9 +30,17 @@ class Book:
             self.notes.append(Note(text, page, date))
             return True
     def set_rating(self, rating: int) -> bool :
-        if rating is not Book.EXCELLENT or Book.GOOD or Book.BAD:
-            return False
+        if rating in (Book.EXCELLENT, Book.GOOD, Book.BAD):
+            self.rating : int = rating
+            return True
         else:
+            return False
+
+    def page_notes_of_page(self, page: int) :
+        return
+
+
+
 
 
 
