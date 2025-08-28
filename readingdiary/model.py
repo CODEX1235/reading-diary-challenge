@@ -1,4 +1,6 @@
 from datetime import datetime
+from operator import truediv
+
 
 class Note:
     def __init__(self, text: str, page: int, date: datetime):
@@ -7,7 +9,7 @@ class Note:
         self.date: datetime = date
 
     def __str__(self) -> str:
-       return f"{self.date} - page {self.page}: {self.text}"
+        return f"{self.date} - page {self.page}: {self.text}"
 
 class Book:
     EXCELLENT: int = 3
@@ -20,7 +22,7 @@ class Book:
         self.title: str = title
         self.author: str = author
         self.pages: int = pages
-        self.rating:int = Book.UNRATED
+        self.rating: int = Book.UNRATED
         self.notes: list[Note] = []
 
     def add_note(self, text: str, page: int, date: datetime) -> bool :
@@ -41,14 +43,56 @@ class Book:
         return [note for note in self.notes if note.page == page]
 
     def page_with_most_notes(self)-> int:
-        if not self.notes:
-            return -1
-
-        notas_por_pagina = {}
+        notes_counter: dict[int, int] = {}
         for note in self.notes:
-            notas_por_pagina[note.page] = notas_por_pagina.get(note.page,0) + 1
+            if note.page not in notes_counter:
+                notes_counter[note.page] = 1
+            else:
+                notes_counter[note.page] += 1
+        max_page, max_counter = -1 , 0
+        for page, count in notes_counter.items():
+            if count > max_counter:
+                max_page, max_counter , = page, count
+        return  max_page
 
-        return max(notas_por_pagina, key= notas_por_pagina.get)
+    def __str__(self) -> str :
+        ratings : dict[int,str] = {
+            Book.EXCELLENT: "Excellent",
+            Book.GOOD: "good",
+            Book.BAD: "Bad",
+            Book.UNRATED: "Unrated"
+        }
+        return f"ISBN: {self.isbn} \n Author: {self.author} \nPages: {self.pages} \n Rating: {ratings[self.rating]}]"
+
+
+    class ReadingDiary:
+        def __init__(self):
+            self.books: dict[str, Book] = {}
+
+        def add_book(self, isbn:str, title : str, author : str , pages : int ) -> bool:
+            if isbn in  self.books:
+                return True
+            else:
+                self.books[isbn] = Book(isbn,title,author,pages)
+                return True
+
+        def search_by_isbn(self, isbn: str) -> Book | None:
+            return self.books.get(isbn, None)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
