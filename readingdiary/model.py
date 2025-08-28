@@ -29,6 +29,7 @@ class Book:
         else:
             self.notes.append(Note(text, page, date))
             return True
+
     def set_rating(self, rating: int) -> bool :
         if rating in (Book.EXCELLENT, Book.GOOD, Book.BAD):
             self.rating : int = rating
@@ -36,8 +37,34 @@ class Book:
         else:
             return False
 
-    def page_notes_of_page(self, page: int) :
-        return
+    def get_notes_of_page(self, page: int)-> list[Note]:
+        return [note for note in self.notes if note.page == page]
+
+    def page_with_most_notes(self)-> int:
+        if not self.notes:
+            return -1
+
+        notas_por_pagina = {}
+        for note in self.notes:
+            notas_por_pagina[note.page] = notas_por_pagina.get(note.page,0) + 1
+
+        return max(notas_por_pagina, key= notas_por_pagina.get)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
