@@ -1,5 +1,5 @@
 from datetime import datetime
-from operator import truediv
+
 
 
 class Note:
@@ -65,19 +65,20 @@ class Book:
         return f"ISBN: {self.isbn} \n Author: {self.author} \nPages: {self.pages} \n Rating: {ratings[self.rating]}]"
 
 
-    class ReadingDiary:
-        def __init__(self):
-            self.books: dict[str, Book] = {}
+class ReadingDiary:
+    def __init__(self):
+        self.books: dict[str, Book] = {}
 
-        def add_book(self, isbn:str, title : str, author : str , pages : int ) -> bool:
-            if isbn in  self.books:
-                return True
-            else:
-                self.books[isbn] = Book(isbn,title,author,pages)
-                return True
+    def add_book(self, isbn:str, title : str, author : str , pages : int ) -> bool:
+        if isbn in  self.books:
+            return True
+        else:
+            self.books[isbn] = Book(isbn,title,author,pages)
+            return True
 
-        def search_by_isbn(self, isbn: str) -> Book | None:
-            return self.books.get(isbn, None)
+    def search_by_isbn(self, isbn: str) -> Book | None:
+        return self.books.get(isbn, None)
+
 
 
 
