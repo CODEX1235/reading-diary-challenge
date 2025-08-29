@@ -60,24 +60,60 @@ class Book:
             Book.EXCELLENT: "Excellent",
             Book.GOOD: "good",
             Book.BAD: "Bad",
-            Book.UNRATED: "Unrated"
+            Book.UNRATED: "unrated"
         }
-        return f"ISBN: {self.isbn} \n Author: {self.author} \nPages: {self.pages} \n Rating: {ratings[self.rating]}]"
+        return f"\nISBN: {self.isbn} \nTitle: {self.title} \nAuthor: {self.author} \nPages: {self.pages} \nRating: {ratings[self.rating]}"
 
 
 class ReadingDiary:
     def __init__(self):
         self.books: dict[str, Book] = {}
 
-    def add_book(self, isbn:str, title : str, author : str , pages : int ) -> bool:
-        if isbn in  self.books:
-            return True
-        else:
-            self.books[isbn] = Book(isbn,title,author,pages)
-            return True
+    def add_book(self, isbn: str, title: str, author: str, pages: int) -> bool:
+        if isbn in self.books:
+            return False
+        self.books[isbn] = Book(isbn, title, author, pages)
+        return True
 
     def search_by_isbn(self, isbn: str) -> Book | None:
         return self.books.get(isbn, None)
+
+    def add_note_to_book(self, isbn: str, text: str, page: int, date: datetime) -> bool:
+        book = self.search_by_isbn(isbn)
+        if book is None:
+            return False
+        return book.add_note(text, page, date)
+
+    def rate_book(self, isbn: str, rating: int) -> bool:
+        book = self.search_by_isbn(isbn)
+        if book is None:
+            return False
+        return book.set_rating(rating)
+
+    def book_with_most_notes(self) -> Book | None:
+        if not self.books:
+            return None
+
+        max_notes = 0
+        book_with_max = None
+
+        for book in self.books.values():
+            if len(book.notes) > max_notes:
+                max_notes = len(book.notes)
+                book_with_max = book
+
+
+        if max_notes == 0:
+            return None
+
+        return book_with_max
+
+
+
+
+
+
+
 
 
 
